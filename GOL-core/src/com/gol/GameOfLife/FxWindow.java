@@ -64,6 +64,7 @@ public class FxWindow extends Application {
     public void start(Stage stage) throws Exception {
         stage.setTitle(title);
 
+        //Manuels Branch test
         //Ui elements
         Button mainEditButton = new Button("Edit");
 
