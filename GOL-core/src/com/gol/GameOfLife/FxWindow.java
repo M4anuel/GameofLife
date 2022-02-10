@@ -1,5 +1,7 @@
 package com.gol.GameOfLife;
 
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -22,6 +24,8 @@ import javafx.scene.image.Image;
 import javafx.scene.input.*;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public class FxWindow extends Application {
@@ -53,6 +57,8 @@ public class FxWindow extends Application {
 
     public TilePane editPaneTiles;
     public static Canvas canvas = new Canvas(core.size.width * tileSize.width, core.size.height * tileSize.height);
+
+    public PresetGenerator generator = new PresetGenerator();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -130,10 +136,20 @@ public class FxWindow extends Application {
         heightBox.setSpacing(5);
         heightBox.setAlignment(Pos.CENTER);
 
-        VBox mainRightForeground = new VBox(); //TODO presets
+        ArrayList<Preset> presets = generator.deserialisePresets();
+
+        ComboBox<String> presetBox = new ComboBox<>();
+        presetBox.setPromptText("Preset");
+
+        for (Preset preset : presets) {
+            presetBox.getItems().add(preset.name);
+        }
+
+        //TODO this here with the backgrounds screams for a factory implementation *wink wink*
+        VBox mainRightForeground = new VBox();
         mainRightForeground.setPadding(new Insets(10, 10, 10, 10));
         mainRightForeground.setSpacing(10);
-        mainRightForeground.getChildren().addAll(mainNextGenButton, mainSimSpeedSlider, mainRunBox, mainGridCheckBox, colorSchemeComboBox);
+        mainRightForeground.getChildren().addAll(mainNextGenButton, mainSimSpeedSlider, mainRunBox, mainGridCheckBox, colorSchemeComboBox, presetBox);
         StackPane mainRightStack = new StackPane(mainRightForeground);
         mainRightStack.setStyle("-fx-background-color: " + ColorScheme.getColorName(colorScheme.menuBackground));
 
@@ -355,6 +371,18 @@ public class FxWindow extends Application {
                 }
                 System.out.println(event.getCode()); //just prints out what key is being pressed
 
+            }
+        });
+
+        presetBox.valueProperty().addListener((observableValue, s, t1) -> {
+            String name = presetBox.getValue();
+            for (Preset preset : presets) {
+                if (preset.name.equals(name)) {
+                    core.size = new Dimension(preset.minReqWindowWidth, preset.minReqWindowHeight);
+                    core.state = preset.presetState;
+                    refreshMainTiles();
+                    break;
+                }
             }
         });
 

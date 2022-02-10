@@ -79,4 +79,6 @@ public class GOLcore {
         return currentGen;
     }
 
+    //TODO add pattern center and align methods
+
 }

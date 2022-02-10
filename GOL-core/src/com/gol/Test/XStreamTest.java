@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -18,19 +19,19 @@ public class XStreamTest {
     public static void main(String[] args) throws IOException {
 
         //Writing: create two cars from Car class below, retrieve target file, parse to XML and write to target file
-        ArrayList<Car> cars = new ArrayList<>();
-        cars.add(new Car("Fiat", 100.5F, 3));
-        cars.add(new Car("Mercedes", 9999.2F, 20));
+        //ArrayList<Car> cars = new ArrayList<>();
+        //cars.add(new Car("Fiat"/*, 100.5F, 3, new boolean[][] {{true, false}, {false, false}}*/));
+        //cars.add(new Car("Mercedes", 9999.2F, 20, new boolean[][] {{false, false, true, true}, {false, true}}));
 
         File file = new File("GOL-core/src/com/gol/Test/cr.xml");
-        FileWriter writer = new FileWriter(file);
+        //FileWriter writer = new FileWriter(file);
 
         XStream xstream = new XStream(new DomDriver()); //TODO look up resource efficiency and speed of other parsers
 
-        xstream.alias("car", Car.class);
+        //xstream.alias("car", Car.class);
 
-        writer.write(xstream.toXML(cars));
-        writer.close(); //IMPORTANT this close thingy is the devil incarnate, do not forget about it
+        //writer.write(xstream.toXML(cars));
+        //writer.close(); //IMPORTANT this close thingy is the devil incarnate, do not forget about it
 
         //Read (there is a lot to this, so comments are along the way)
         /*Natively, XStream only allows parsing primitive types and some others from XML, special permissions have to
@@ -61,7 +62,7 @@ public class XStreamTest {
             }
 
             if (fiat != null) { //Brint if found
-                System.out.println(fiat.brand + " " + fiat.price + " " + fiat.gears);
+                System.out.println(fiat.brand + " " + fiat.price + " " + fiat.gears + " " + Arrays.deepToString(fiat.array) + " " + fiat.test);
             }
         } catch (Exception e) {
             System.out.println("parsing failed coz yalls objects wack af");
@@ -78,11 +79,18 @@ class Car {
     public String brand;
     public float price;
     public int gears;
+    public boolean[][] array;
+    public boolean test;
 
-    public Car(String brand, float price, int gears) {
+    public Car(String brand) {
+        this.brand = brand;
+    }
+
+    public Car(String brand, float price, int gears, boolean[][] array) {
         this.brand = brand;
         this.price = price;
         this.gears = gears;
+        this.array = array;
     }
 
 }
