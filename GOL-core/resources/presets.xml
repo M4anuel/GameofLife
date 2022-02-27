@@ -26,7 +26,7 @@
       </boolean-array>
     </presetState>
     <minReqWindowWidth>3</minReqWindowWidth>
-    <minReqWindowHeight>1</minReqWindowHeight>
+    <minReqWindowHeight>3</minReqWindowHeight>
     <oscillator>false</oscillator>
     <gun>false</gun>
   </com.gol.GameOfLife.Preset>

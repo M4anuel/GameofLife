@@ -380,6 +380,8 @@ public class FxWindow extends Application {
                 if (preset.name.equals(name)) {
                     core.size = new Dimension(preset.minReqWindowWidth, preset.minReqWindowHeight);
                     core.state = preset.presetState;
+                    editPaneTiles.setPrefColumns(core.size.width);
+                    editPaneTiles.setPrefRows(core.size.height);
                     refreshMainTiles();
                     break;
                 }
@@ -474,13 +476,19 @@ public class FxWindow extends Application {
         for (int i = 0; i < core.size.height; i++) {
             for (int j = 0; j < core.size.width; j++) {
                 if (core.state[i][j]) {
+                    System.out.println("i brint :]");
                     graphics.fillRect(
                             (i * tileSize.width) + tileGap + tileOffset.width,
                             (j * tileSize.height) + tileGap + tileOffset.height,
                             tileSize.width - tileGap * 2, tileSize.height - tileGap * 2);
+                } else {
+                    System.out.println("mebi i dond x}");
                 }
             }
         }
+
+        System.out.println(Arrays.deepToString(core.state));
+        System.out.print("\n");
     }
 
 }
