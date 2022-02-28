@@ -17,7 +17,7 @@ public class GOLcore {
      * using XStream to enable limited "backwards iteration" and preset features for example.
      */
 
-    public Dimension size = new Dimension(20, 20); //Default grid size
+    public Dimension size = new Dimension(40, 40); //Default grid size
 
     public boolean running = false;
     public int simSpeed = 1500; //Set default, minimum and maximum simulation speed in milliseconds

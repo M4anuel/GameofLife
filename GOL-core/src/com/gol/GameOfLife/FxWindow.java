@@ -141,10 +141,10 @@ public class FxWindow extends Application {
         //TODO this here with the backgrounds screams for a factory implementation *wink wink*
         VBox mainRightForeground = new VBox();
         mainRightForeground.setPadding(new Insets(10, 10, 10, 10));
-        mainRightForeground.setSpacing(10);
+        mainRightForeground.setSpacing(20);
         mainRightForeground.getChildren().addAll(mainNextGenButton, SimSpeedSlider, mainRunBox, mainGridCheckBox, colorSchemeComboBox);
         StackPane mainRightStack = new StackPane(mainRightForeground);
-        mainRightStack.setStyle("-fx-background-color: " + ColorScheme.getColorName(colorScheme.menuBackground));
+        mainRightStack.setStyle("-fx-background-color: " + ColorScheme.getColorName(colorScheme.menuBackground) + "; -fx-padding: 30 0 0 0; ");
 
         HBox mainBottomForeground = new HBox();
         mainBottomForeground.setPadding(new Insets(20, 20, 20, 20));
