@@ -6,7 +6,7 @@ public enum ColorScheme {
 
     LIGHT("Light", Color.WHITE, Color.LIGHTGRAY, Color.BLACK, Color.LIGHTGRAY, Color.WHITE, Color.BLACK, Color.LIGHTGRAY),
     //DARCULA,
-    DARK("Dark", Color.BLACK, Color.DARKGRAY, Color.LIGHTGRAY, Color.DARKGRAY.darker().darker(), Color.DARKGRAY.darker().darker(), Color.LIGHTGRAY, Color.DARKGRAY);
+    DARK("Dark", Color.DARKGRAY.darker().darker(), Color.DARKGRAY, Color.LIGHTGRAY, Color.DARKGRAY.darker().darker(), Color.DARKGRAY.darker().darker(), Color.WHITE, Color.DARKGRAY);
 
     final Color canvasBackground;
     final Color menu;
