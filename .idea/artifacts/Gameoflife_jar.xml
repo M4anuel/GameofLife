@@ -1,0 +1,33 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Gameoflife:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Gameoflife_jar</output-path>
+    <root id="archive" name="Gameoflife.jar">
+      <element id="module-output" name="Gameoflife" />
+      <element id="module-output" name="GOL-core" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/jinput-2.0.9/jinput-2.0.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/jinput-2.0.9/windows-plugin-2.0.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/xstream-1.4.18/lib/xstream-1.4.18.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/xstream-1.4.18/lib/xstream-jmh-1.4.18.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/xstream-1.4.18/lib/xstream-benchmark-1.4.18.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/xstream-1.4.18/lib/xstream-hibernate-1.4.18.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/javafx-17.1.0/lib/javafx-swt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/javafx-17.1.0/lib/javafx.web.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/javafx-17.1.0/lib/javafx.base.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/javafx-17.1.0/lib/javafx.fxml.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/javafx-17.1.0/lib/javafx.media.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/javafx-17.1.0/lib/javafx.swing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/javafx-17.1.0/lib/javafx.controls.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/GOL-core/javafx-17.1.0/lib/javafx.graphics.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Javafx/lib/javafx-swt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Javafx/lib/javafx.web.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Javafx/lib/javafx.base.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Javafx/lib/javafx.fxml.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Javafx/lib/javafx.media.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Javafx/lib/javafx.swing.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Javafx/lib/javafx.controls.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Javafx/lib/javafx.graphics.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Jinput/jinput-2.0.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/src/lib/Jinput/windows-plugin-2.0.9.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

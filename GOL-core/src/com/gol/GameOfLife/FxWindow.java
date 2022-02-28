@@ -310,6 +310,11 @@ public class FxWindow extends Application {
         });
 
         editClearButton.setOnAction(e -> { //TEMP only works bcs refreshEditTiles is brok, separate func needed
+            for (int i = 0; i < core.size.height; i++) {
+                for (int j = 0; j < core.size.width; j++) {
+                    core.state[i][j] = false;
+                }
+            }
             refreshEditTiles();
         });
 
@@ -431,7 +436,7 @@ public class FxWindow extends Application {
         try {
             return Integer.parseInt(input.getText());
         } catch(NumberFormatException e) {
-            throw new NumberFormatException("suck dick");
+            throw new NumberFormatException("not a number");
         }
     }
 
@@ -445,8 +450,7 @@ public class FxWindow extends Application {
         //HashSet<CheckBox> checkBoxes = new HashSet<>();
         List<CheckBox> checkBoxes = new ArrayList<>();
 
-        List<Boolean> corelist = new ArrayList<>();
-        corelist = array_convert_toList(core.state);
+        List<Boolean> corelist = array_convert_toList(core.state);
         int pos = 0;
 
         for (int i = 0; i < core.size.height; i++) {
