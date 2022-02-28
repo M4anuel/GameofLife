@@ -151,7 +151,7 @@ class Test {
         generator.addPreset(new Preset("cubli", cubli));
         generator.addPreset(new Preset("stic", stic));
         generator.serialisePresets();
-        ArrayList<Preset> dud = (ArrayList<Preset>) generator.deserialisePresets();
+        ArrayList<Preset> dud = generator.deserialisePresets();
         System.out.println(Arrays.deepToString(dud.get(0).presetState));
     }
 
