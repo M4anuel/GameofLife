@@ -1,9 +1,6 @@
 package com.gol.GameOfLife;
 
-import javafx.application.Application;
-
 import java.awt.*;
-import java.util.Arrays;
 
 public class GOLcore {
 
@@ -53,7 +50,8 @@ public class GOLcore {
                 for (int k = -1; k <= 1; k++) {
                     for (int l = -1; l <= 1; l++) {
                         try {
-                            if (currentGen[i + k][j + l]) { //assert a horse cock to your ass jetbrains TODO find that horse cock
+                            assert currentGen[i + k] != null;
+                            if (currentGen[i + k][j + l]) {
                                 nbrAlive++;
                             }
                         } catch (Exception ignored) {}
@@ -70,15 +68,5 @@ public class GOLcore {
 
         return nextGen;
     }
-
-    public boolean[][] nextGeneration(boolean[][] currentGen, int gens) {
-        for (int i = 0; i < gens; i++) {
-            currentGen = nextGeneration(currentGen);
-        }
-
-        return currentGen;
-    }
-
-    //TODO add pattern center and align methods
 
 }

@@ -29,7 +29,7 @@ public enum ColorScheme {
         this.menuElementColor = menuElementColor;
     }
 
-    public static String getColorName(Color color) { //FIXME debug this
+    public static String getColorName(Color color) {
         if (Color.WHITE.equals(color)) {
             return "WHITE";
         } else if (Color.LIGHTGRAY.equals(color)) {
