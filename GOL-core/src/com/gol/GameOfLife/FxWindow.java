@@ -183,7 +183,7 @@ public class FxWindow extends Application {
         editStack.setStyle("-fx-background-color: " + ColorScheme.getColorName(colorScheme.canvasBackground));
 
         Scene edit = new Scene(editStack);
-        edit.getStylesheets().add(String.valueOf(getClass().getResource("/style.css")));
+        edit.getStylesheets().add(String.valueOf(getClass().getResource("style.css")));
 
         //Choose scene
         stage.setScene(main);
