@@ -3,20 +3,17 @@ package com.gol.GameOfLife;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 import static com.gol.GameOfLife.AnsiColour.*;
 
-public class PresetGenerator {
+public class PresetHandler {
 
     String path = "GOL-core/resources/presets.xml";
     ArrayList<Preset> presets = new ArrayList<>();
@@ -147,7 +144,7 @@ class Test {
     };
 
     public static void main(String[] args) throws IOException {
-        PresetGenerator generator = new PresetGenerator();
+        PresetHandler generator = new PresetHandler();
         generator.addPreset(new Preset("cubli", cubli));
         generator.addPreset(new Preset("stic", stic));
         generator.serialisePresets();

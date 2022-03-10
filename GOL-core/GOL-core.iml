@@ -12,5 +12,14 @@
     <orderEntry type="library" exported="" name="jinput-2.0.9." level="project" />
     <orderEntry type="library" exported="" name="xstream-1.4.18" level="project" />
     <orderEntry type="library" exported="" name="javafx-17.1.0" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/20.1.0/annotations-20.1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

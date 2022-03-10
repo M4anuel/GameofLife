@@ -1,7 +1,5 @@
 package com.gol.GameOfLife;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -16,34 +14,33 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+
+/**
+ * Constructs a {@code JavaFx} application and feeds it all the required parameters.
+ * <p>
+ * This class creates a GOLcore instance, and using several parameters defined below which only concern graphic
+ * display it visualises the current tile state. Features include an edit pane (partially borked atm), color scheme
+ * selector, general UI among other features which allow for more simple human interaction and QOL-features.
+ * <p>
+ * As of now, it also includes the node listeners. Whether they preload all functions into some buffer or the
+ * functions are called each time an event is detected will determine if a separate class will be created for them
+ * or not.
+ * <p>
+ * This class currently acts as a core builder. This functionality will subside eventually when it is clear how the
+ * JavaFx application framework functions, and how to properly interface with it from outside.
+ * why i be writin this nobdy gon reed it a/w
+ */
 
 public class FxWindow extends Application {
-
-    /**
-     * This class creates a GOLcore instance, and using several parameters defined below which only concern graphic
-     * display it visualises the current tile state. Features include an edit pane (partially borked atm), color scheme
-     * selector, general UI among other features which allow for more simple human interaction and QOL-features.
-     *
-     * As of now, it also includes the node listeners. Whether they preload all functions into some buffer or the
-     * functions are called each time an event is detected will determine if a separate class will be created for them
-     * or not.
-     *
-     * This class currently acts as a core builder. This functionality will subside eventually when it is clear how the
-     * JavaFx application framework functions, and how to properly interface with it from outside.
-     * why i be writin this nobdy gon reed it a/w
-     */
 
     //Attributes only concerning graphic interface
     public static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -57,9 +54,9 @@ public class FxWindow extends Application {
     public static GOLcore core = new GOLcore(true);
 
     public TilePane editPaneTiles;
-    public static Canvas canvas = new Canvas(core.size.width * tileSize.width, core.size.height * tileSize.height);
+    public static Canvas canvas = new Canvas(core.getWidth() * tileSize.width, core.getHeight() * tileSize.height);
 
-    public PresetGenerator generator = new PresetGenerator();
+    public PresetHandler presetHandler = new PresetHandler();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -90,12 +87,12 @@ public class FxWindow extends Application {
         HBox mainRunBox = new HBox();
         mainRunBox.getChildren().addAll(mainRunButton, mainStopButton);
 
-        Slider mainSimSpeedSlider = new Slider(core.minSimSpeed, core.maxSimSpeed, core.simSpeed);
+        Slider mainSimSpeedSlider = new Slider(core.getMinSimSpeed(), core.getMaxSimSpeed(), core.getSimSpeed());
         mainSimSpeedSlider.setShowTickLabels(true);
         mainSimSpeedSlider.setShowTickMarks(true);
-        mainSimSpeedSlider.setMajorTickUnit((double) core.simSpeed / 2);
-        mainSimSpeedSlider.setMinorTickCount(core.simSpeed / 20);
-        mainSimSpeedSlider.setBlockIncrement((double) core.simSpeed / 10);
+        mainSimSpeedSlider.setMajorTickUnit((double) core.getSimSpeed() / 2);
+        mainSimSpeedSlider.setMinorTickCount(core.getSimSpeed() / 20);
+        mainSimSpeedSlider.setBlockIncrement((double) core.getSimSpeed() / 10);
 
         Button editSaveButton = new Button("Save");
         Button editEnterButton = new Button("Enter");
@@ -120,7 +117,7 @@ public class FxWindow extends Application {
 
         Label widthLabel = new Label("width:");
         widthLabel.setAlignment(Pos.CENTER);
-        TextField widthField = new TextField(Integer.toString(core.size.width));
+        TextField widthField = new TextField(Integer.toString(core.getWidth()));
         widthField.setAlignment(Pos.CENTER);
         widthField.setMaxWidth(50);
         HBox widthBox = new HBox();
@@ -130,7 +127,7 @@ public class FxWindow extends Application {
 
         Label heightLabel = new Label("height:");
         widthLabel.setAlignment(Pos.CENTER);
-        TextField heightField = new TextField(Integer.toString(core.size.height));
+        TextField heightField = new TextField(Integer.toString(core.getHeight()));
         heightField.setAlignment(Pos.CENTER);
         heightField.setMaxWidth(50);
         HBox heightBox = new HBox();
@@ -138,7 +135,7 @@ public class FxWindow extends Application {
         heightBox.setSpacing(5);
         heightBox.setAlignment(Pos.CENTER);
 
-        ArrayList<Preset> presets = generator.deserialisePresets();
+        ArrayList<Preset> presets = presetHandler.deserialisePresets();
 
         ComboBox<String> presetBox = new ComboBox<>();
         presetBox.setPromptText("Preset");
@@ -190,8 +187,8 @@ public class FxWindow extends Application {
             public void handle(KeyEvent event) { //normal eventhandler
 
                 if(event.getCode() == KeyCode.S){ //.getCode() is the key currently being pressed
-                    int prevWidth = core.size.width;
-                    int prevHeight = core.size.height;
+                    int prevWidth = core.getWidth();
+                    int prevHeight = core.getHeight();
                 }
                 System.out.println(event.getCode()); //just prints out what key is being pressed
 
@@ -201,8 +198,8 @@ public class FxWindow extends Application {
         //Def edit panel
         refreshEditTiles();
         editPaneTiles.setAlignment(Pos.CENTER);
-        editPaneTiles.setPrefColumns(core.size.width);
-        editPaneTiles.setPrefRows(core.size.height);
+        editPaneTiles.setPrefColumns(core.getWidth());
+        editPaneTiles.setPrefRows(core.getHeight());
         editPaneTiles.setMaxWidth(Region.USE_PREF_SIZE);
         editPaneTiles.setPadding(new Insets(20, 20, 0, 20));
 
@@ -226,25 +223,20 @@ public class FxWindow extends Application {
         //Button actions
         editEnterButton.setOnAction(e -> { //Enter button in edit panel, confirms changes to grid size, deletes current state
             //TODO instead of recreating the entire tilepane everytime, perhaps just change existing one and then show, but dat conversion shit nefarious
-            int prevWidth = core.size.width;
-            int prevHeight = core.size.height;
+            int prevWidth = core.getWidth();
+            int prevHeight = core.getHeight();
 
-            core.size.width = parseInt(widthField);
-            core.size.height = parseInt(heightField);
+            int width = parseInt(widthField);
+            int height = parseInt(heightField);
 
-            editPaneTiles.setPrefColumns(core.size.width);
-            editPaneTiles.setPrefRows(core.size.height);
+            core.generateEmptyState(width, height);
 
-            core.state = new boolean[core.size.height][core.size.width];
-            for (int i = 0; i < core.size.height; i++) {
-                for (int j = 0; j < core.size.width; j++) {
-                    core.state[i][j] = false;
-                }
-            }
+            editPaneTiles.setPrefColumns(width);
+            editPaneTiles.setPrefRows(height);
 
             refreshEditTiles();
-            widthField.setText(Integer.toString(core.size.width));
-            heightField.setText(Integer.toString(core.size.height));
+            widthField.setText(Integer.toString(core.getWidth()));
+            heightField.setText(Integer.toString(core.getHeight()));
 
             stage.sizeToScene();
 
@@ -259,17 +251,14 @@ public class FxWindow extends Application {
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.CANCEL) {
-                    core.size.width = prevWidth;
-                    core.size.height = prevHeight;
-
-                    core.state = new boolean[core.size.height][core.size.width];
+                    core.generateEmptyState(prevWidth, prevHeight);
 
                     refreshEditTiles();
-                    widthField.setText(Integer.toString(core.size.width));
-                    heightField.setText(Integer.toString(core.size.height));
+                    widthField.setText(Integer.toString(core.getWidth()));
+                    heightField.setText(Integer.toString(core.getHeight()));
 
-                    editPaneTiles.setPrefColumns(core.size.width);
-                    editPaneTiles.setPrefRows(core.size.height);
+                    editPaneTiles.setPrefColumns(core.getWidth());
+                    editPaneTiles.setPrefRows(core.getHeight());
 
                     stage.sizeToScene();
                 }
@@ -277,13 +266,17 @@ public class FxWindow extends Application {
         });
 
         editSaveButton.setOnAction(e -> { //Save button in edit panel, confirms entered tile config and sets scene to main panel
-            for (int j = 0; j < core.size.width; j++) {
-                for (int i = 0; i < core.size.height; i++) {
+            boolean[][] state = new boolean[core.getHeight()][core.getWidth()];
+
+            for (int j = 0; j < core.getWidth(); j++) {
+                for (int i = 0; i < core.getHeight(); i++) {
                     try {
-                        core.state[i][j] = ((CheckBox) editPaneTiles.getChildren().get(j * core.size.width + i)).isSelected();
+                        state[i][j] = ((CheckBox) editPaneTiles.getChildren().get(j * core.getWidth() + i)).isSelected();
                     } catch (Exception ignored) {}
-                } //TODO wtf it dond work for non-squares
+                } //TODO wtf it dond work for non-squares, also; some errors are thrown even though they shouldn't
             }
+
+            core.setState(state);
 
             refreshMainTiles();
             stage.setScene(main);
@@ -291,8 +284,8 @@ public class FxWindow extends Application {
 
         mainEditButton.setOnAction(e -> { //Edit button in main panel, sets scene to edit panel
             refreshEditTiles();
-            if (core.running) {
-                core.running = false;
+            if (core.isRunning()) {
+                core.setRunning(false);
                 mainRunBox.getChildren().get(0).setDisable(false);
                 mainRunBox.getChildren().get(1).setDisable(true);
             }
@@ -305,36 +298,35 @@ public class FxWindow extends Application {
         });
 
         mainNextGenButton.setOnAction(e -> {
-            core.state = core.nextGeneration(core.state);
+            core.advanceGeneration();
             refreshMainTiles();
         });
 
-        editClearButton.setOnAction(e -> { //TEMP only works bcs refreshEditTiles is brok, separate func needed
-            core.state = new boolean[core.size.width][core.size.height];
-
+        editClearButton.setOnAction(e -> {
+            core.generateEmptyState(core.getWidth(), core.getHeight());
             refreshEditTiles();
         });
 
         mainRunButton.setOnAction(e -> {
-            core.running = true;
+            core.setRunning(true);
             mainRunBox.getChildren().get(0).setDisable(true);
             mainRunBox.getChildren().get(1).setDisable(false);
         });
 
         mainStopButton.setOnAction(e -> {
-            core.running = false;
+            core.setRunning(false);
             mainRunBox.getChildren().get(0).setDisable(false);
             mainRunBox.getChildren().get(1).setDisable(true);
         });
 
-        mainTileGapSizeMinus.setOnAction(e ->{
-            tileGap+=1;
+        mainTileGapSizeMinus.setOnAction(e -> {
+            tileGap ++;
             tileGapSizeLabel.setText(Integer.toString(tileGap));
             refreshMainTiles();
         });
 
-        mainTileGapSizePlus.setOnAction(e ->{
-            tileGap-=1;
+        mainTileGapSizePlus.setOnAction(e -> {
+            tileGap --;
             tileGapSizeLabel.setText(Integer.toString(tileGap));
             refreshMainTiles();
         });
@@ -344,9 +336,7 @@ public class FxWindow extends Application {
             refreshMainTiles();
         });
 
-        mainSimSpeedSlider.valueProperty().addListener((observableValue, number, t1) -> {
-            core.simSpeed = (int) mainSimSpeedSlider.getValue();
-        });
+        mainSimSpeedSlider.valueProperty().addListener((observableValue, number, t1) -> core.setSimSpeed((int) mainSimSpeedSlider.getValue()));
 
         colorSchemeComboBox.valueProperty().addListener((observableValue, s, t1) -> {
             colorScheme = colorSchemeComboBox.getValue();
@@ -357,35 +347,31 @@ public class FxWindow extends Application {
             background.setStyle("-fx-background-color: " + ColorScheme.getColorName(colorScheme.canvasBackground));
             mainEditButton.setStyle("-fx-background-color: " + ColorScheme.getColorName(colorScheme.menuElementColor));
             mainEditButton.setStyle("-fx-font-color:" + ColorScheme.getColorName(colorScheme.menuFontColor));
+            mainNextGenButton.setStyle("-fx-text-fill: " + ColorScheme.getColorName(colorScheme.menuFontColor));
             refreshMainTiles();
         });
 
-        main.setOnKeyPressed(new EventHandler<KeyEvent>() { //FIXME Space wird noni entdeckt, mues mi aber chli me ufs geo konzentriere
+        main.setOnKeyPressed(event -> { //normal eventhandler FIXME Space wird noni entdeckt, mues mi aber chli me ufs geo konzentriere
             //PROPOSE chönnts sy wüu space wines "enter" oder "select" zeut, aso we zb e button blau umrandet (selected) isch
-            @Override
-            public void handle(KeyEvent event) { //normal eventhandler
-
-                if(event.getCode() == KeyCode.SPACE){ //.getCode() is the key currently being pressed
-                    if(core.running){
-                        core.running=false;
-                    }
-                    else {
-                        core.running = false;
-                    }
+            if(event.getCode() == KeyCode.SPACE){ //.getCode() is the key currently being pressed
+                if(core.isRunning()){
+                    core.setRunning(false);
                 }
-                System.out.println(event.getCode()); //just prints out what key is being pressed
-
+                else {
+                    core.setRunning(false);
+                }
             }
+            System.out.println(event.getCode()); //just prints out what key is being pressed
         });
 
         presetBox.valueProperty().addListener((observableValue, s, t1) -> {
             String name = presetBox.getValue();
+
             for (Preset preset : presets) {
                 if (preset.name.equals(name)) {
-                    core.size = new Dimension(preset.minReqWindowWidth, preset.minReqWindowHeight);
-                    core.state = preset.presetState;
-                    editPaneTiles.setPrefColumns(core.size.width);
-                    editPaneTiles.setPrefRows(core.size.height);
+                    core.setState(preset.presetState);
+                    editPaneTiles.setPrefColumns(core.getWidth());
+                    editPaneTiles.setPrefRows(core.getHeight());
                     refreshMainTiles();
                     break;
                 }
@@ -397,21 +383,13 @@ public class FxWindow extends Application {
             //TEMP meek fönctions sodass dr manuel nümme dä scheiss hie cha kabutt mache
 
             if(event.getCode() == KeyCode.S){ //.getCode() is the key currently being pressed
-                int prevWidth = core.size.width;
-                int prevHeight = core.size.height;
+                int prevWidth = core.getWidth();
+                int prevHeight = core.getHeight();
 
-                core.size.width = parseInt(widthField);
-                core.size.height = parseInt(heightField);
+                core.generateEmptyState(parseInt(heightField), parseInt(widthField));
 
-                editPaneTiles.setPrefColumns(core.size.width);
-                editPaneTiles.setPrefRows(core.size.height);
-
-                core.state = new boolean[core.size.height][core.size.width];
-                for (int i = 0; i < core.size.height; i++) {
-                    for (int j = 0; j < core.size.width; j++) {
-                        core.state[i][j] = false;
-                    }
-                }
+                editPaneTiles.setPrefColumns(core.getWidth());
+                editPaneTiles.setPrefRows(core.getHeight());
             }
             System.out.println(event.getCode()); //just prints out what key is being pressed
         });
@@ -429,7 +407,12 @@ public class FxWindow extends Application {
 
     }
 
-    public int parseInt(TextField input){ //Convenience bundle; checks and returns integer from a text field
+    /**
+     * Extracts and parses an integer form a {@code TextField}. Only works if the message IS an integer.
+     * @param input {@code TextField} from which the integer is to be taken
+     * @return      an integer if parsable
+     */
+    private int parseInt(TextField input) {
         try {
             return Integer.parseInt(input.getText());
         } catch(NumberFormatException e) {
@@ -447,13 +430,13 @@ public class FxWindow extends Application {
         //HashSet<CheckBox> checkBoxes = new HashSet<>();
         ArrayList<CheckBox> checkBoxes = new ArrayList<>();
 
-        System.out.println(Arrays.deepToString(core.state));
+        System.out.println(Arrays.deepToString(core.getState()));
 
-        ArrayList<Boolean> corelist = toArrayList(core.state);
+        ArrayList<Boolean> corelist = toArrayList(core.getState());
         int pos = 0;
 
-        for (int i = 0; i < core.size.height; i++) {
-            for (int j = 0; j < core.size.width; j++) {
+        for (int i = 0; i < core.getHeight(); i++) {
+            for (int j = 0; j < core.getWidth(); j++) {
                 CheckBox checkBox = new CheckBox();
                 checkBox.setSelected(corelist.get(pos));
                 pos+= 1;
@@ -471,22 +454,22 @@ public class FxWindow extends Application {
         graphics.setFill(colorScheme.tiles);
         graphics.setStroke(colorScheme.grid);
 
-        canvas.setWidth(core.size.width * tileSize.width);
-        canvas.setHeight(core.size.height * tileSize.height);
+        canvas.setWidth(core.getWidth() * tileSize.width);
+        canvas.setHeight(core.getHeight() * tileSize.height);
 
         if (showGrid) {
-            for (int i = 0; i <= core.size.height; i++) {
+            for (int i = 0; i <= core.getHeight(); i++) {
                 graphics.strokeLine(0, i * tileSize.height, (int) canvas.getWidth(), i * tileSize.height);
             }
 
-            for (int i = 0; i <= core.size.width; i++) {
+            for (int i = 0; i <= core.getWidth(); i++) {
                 graphics.strokeLine(i * tileSize.width, 0, i * tileSize.width, (int) canvas.getHeight());
             }
         }
 
-        for (int i = 0; i < core.size.height; i++) {
-            for (int j = 0; j < core.size.width; j++) {
-                if (core.state[i][j]) {
+        for (int i = 0; i < core.getHeight(); i++) {
+            for (int j = 0; j < core.getWidth(); j++) {
+                if (core.getState()[i][j]) {
                     graphics.fillRect(
                             (i * tileSize.width) + tileGap + tileOffset.width,
                             (j * tileSize.height) + tileGap + tileOffset.height,
@@ -499,8 +482,8 @@ public class FxWindow extends Application {
     public static ArrayList<Boolean> toArrayList(boolean[][] state){
         ArrayList<Boolean> arrayList = new ArrayList<>();
 
-        for (int i = 0; i < core.state.length; i++){
-            for (int j = 0; j < core.state[i].length; j++){
+        for (int i = 0; i < core.getHeight(); i++){
+            for (int j = 0; j < core.getWidth(); j++){
                 arrayList.add(state[j][i]);
             }
         }
