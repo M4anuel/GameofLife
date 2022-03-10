@@ -2,8 +2,6 @@ package com.gol.GameOfLife;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.gol.GameOfLife.FxWindow.refreshMainTiles;
-
 public class RunningThread extends Thread {
 
     GOLcore core;
@@ -17,7 +15,7 @@ public class RunningThread extends Thread {
         while (true) {
             if (core.isRunning()) {
                 core.advanceGeneration();
-                refreshMainTiles();
+                core.window.refreshMainTiles();
             }
 
             try {

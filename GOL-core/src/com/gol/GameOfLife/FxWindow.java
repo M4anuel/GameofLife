@@ -51,18 +51,20 @@ public class FxWindow extends Application {
     public static Dimension tileOffset = new Dimension(0, 0);
     public static ColorScheme colorScheme = ColorScheme.LIGHT;
 
-    public static GOLcore core = new GOLcore(true);
+    public GOLcore core = new GOLcore(this, true);
 
     public TilePane editPaneTiles;
-    public static Canvas canvas = new Canvas(core.getWidth() * tileSize.width, core.getHeight() * tileSize.height);
+    public static Canvas canvas;
 
     public PresetHandler presetHandler = new PresetHandler();
 
     @Override
     public void start(Stage stage) throws Exception {
+        canvas = new Canvas(core.getWidth() * tileSize.width, core.getHeight() * tileSize.height);
+
         stage.setTitle(title);
 
-        //Manuels Branch test
+        //Manuels Branch test <- you sure bout that
         //Ui elements
         Button mainEditButton = new Button("Edit");
 
@@ -448,7 +450,7 @@ public class FxWindow extends Application {
         editPaneTiles.getChildren().addAll(checkBoxes);
     }
 
-    public static void refreshMainTiles() { //Draws tiles to main panel according to core state
+    public void refreshMainTiles() { //Draws tiles to main panel according to core state TODO unstaticify
         GraphicsContext graphics = canvas.getGraphicsContext2D();
         graphics.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         graphics.setFill(colorScheme.tiles);
@@ -479,7 +481,7 @@ public class FxWindow extends Application {
         }
     }
 
-    public static ArrayList<Boolean> toArrayList(boolean[][] state){
+    public ArrayList<Boolean> toArrayList(boolean[][] state) {
         ArrayList<Boolean> arrayList = new ArrayList<>();
 
         for (int i = 0; i < core.getHeight(); i++){

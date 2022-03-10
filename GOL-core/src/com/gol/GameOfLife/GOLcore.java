@@ -31,13 +31,13 @@ public class GOLcore {
     protected Dimension size = new Dimension(20, 20); //Default grid size
 
     private boolean running = false;
+
     /**
      * Simulation speed in milliseconds
      * @see com.gol.GameOfLife.GOLcore#minSimSpeed
      * @see com.gol.GameOfLife.GOLcore#maxSimSpeed
      * @see com.gol.GameOfLife.GOLcore#minSimDelay
      */
-
     private int simSpeed = 1500; //Default sim speed
     private int minSimSpeed = 1000; //Minimum simulation speed shown in UI
     private int maxSimSpeed = 2000;
@@ -45,18 +45,22 @@ public class GOLcore {
 
     private boolean[][] state;
 
+    FxWindow window;
+
     /**
      * Constructs a {@code GOLcore} object with default parameters as specified in GOLcore.
      */
     GOLcore() {
+        state = new boolean[20][20];
     }
 
     /**
      * Constructs a {@code GOLcore} object with default parameters and
-     * @param enableThread
+     * @param enableThread whether a thread should be initiated
      */
-    GOLcore(boolean enableThread) {
-        state = new boolean[size.height][size.width];
+    GOLcore(FxWindow window, boolean enableThread) {
+        this.window = window;
+        state = new boolean[20][20];
         if (enableThread) {
             thread = new RunningThread(this);
             thread.start();
@@ -83,6 +87,9 @@ public class GOLcore {
         this.state = state;
     }
 
+    /**
+     * @return simulation speed
+     */
     public int getSimSpeed() {
         return simSpeed;
     }
